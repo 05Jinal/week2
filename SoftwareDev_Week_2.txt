@@ -138,3 +138,61 @@ values
 
 end
 GO
+
+WEEK-2 HOMEWORK
+
+--1. Add a new column to the Customer Sale View called "Full Name". This should be made up of the Customer Firstname and Last Name columns
+--2. Write a function that calculates the persons age using their date of birth
+
+
+SELECT 
+    c.Firstname,
+    c.Lastname,
+    RTRIM(LTRIM(c.Firstname)) + RTRIM(LTRIM(c.Lastname)) AS FullName,
+	c.DateofBirth,
+	DATEDIFF(YEAR, c.DateofBirth, GETDATE()) AS Age --DATEDIFF(YEAR, c.DateofBirth, GETDATE()) calculates the difference in years between the DateofBirth and the current date (GETDATE()), which gives you the age.
+
+FROM 
+    Customer c;
+
+select * from dbo.Product -- for location
+
+
+--3. Create a new table called Store that will give the details of where the sale was made. This should contain "Name" and "Location"
+
+--4.Add the Store to the sale table
+
+
+  USE [ICWEEK2]
+GO
+
+CREATE TABLE [dbo].[Stores] (
+    [StoresID] INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    [Name] VARCHAR(100) NOT NULL,
+    [Location] VARCHAR(200) NOT NULL
+);
+
+
+ALTER TABLE [dbo].[Sale]
+ADD StoresID INT;
+
+ALTER TABLE [dbo].[Sale]
+ADD CONSTRAINT FK_Sale_Stores FOREIGN KEY (StoresID)
+REFERENCES [dbo].[Stores](StoresID);
+
+
+INSERT INTO [dbo].[Stores] ([Name], [Location])
+VALUES 
+('Albany Electronics', '45 Bushlands Park Dr, Albany'),
+('Sylvia Park MegaStore', '286 Mt Wellington Hwy, Auckland');
+
+
+USE [ICWEEK2]
+GO
+
+SELECT [StoresID]
+      ,[Name]
+      ,[Location]
+  FROM [dbo].[Stores]
+
+
